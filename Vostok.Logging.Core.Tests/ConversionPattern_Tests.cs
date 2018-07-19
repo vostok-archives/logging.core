@@ -4,10 +4,10 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using Vostok.Logging.Abstractions;
-using Vostok.Logging.Core;
+
 // ReSharper disable UseStringInterpolation
 
-namespace Vostok.Logging.Tests
+namespace Vostok.Logging.Core.Tests
 {
     [TestFixture]
     internal class ConversionPattern_Tests

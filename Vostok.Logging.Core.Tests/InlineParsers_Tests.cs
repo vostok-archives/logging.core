@@ -5,7 +5,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using Vostok.Logging.Core.Parsing;
 
-namespace Vostok.Logging.Tests
+namespace Vostok.Logging.Core.Tests
 {
     [TestFixture]
     internal class InlineParsers_Tests
