@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Vostok.Logging.Core
 {
-    internal class SettingsValidationResult
+    public class SettingsValidationResult
     {
         private enum ValidationResultType
         {

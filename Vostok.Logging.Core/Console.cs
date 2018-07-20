@@ -1,6 +1,6 @@
 ﻿namespace Vostok.Logging.Core
 {
-    internal static class Console
+    public static class Console
     {
         public static void TryWriteLine(string message)
         {
