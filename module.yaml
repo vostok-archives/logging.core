@@ -12,7 +12,7 @@ notests *default:
     - vostok.logging.abstractions@dev
     - vostok.commons@dev
 
-full-build > sdk:
+full-build > notests:
   build:
     target: Vostok.Logging.Core.sln
     configuration: Release

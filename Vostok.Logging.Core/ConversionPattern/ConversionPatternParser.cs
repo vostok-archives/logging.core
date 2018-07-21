@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Vostok.Logging.Core.ConversionPattern
 {
-    internal class ConversionPatternParser : IConversionPatternParser
+    public static class ConversionPatternParser
     {
         private static readonly Dictionary<PatternPartType, (string pattern, string startsFrom)> PatternKeys;
         private static readonly string RegexPattern;
@@ -28,7 +28,7 @@ namespace Vostok.Logging.Core.ConversionPattern
             RegexPattern = $"(?:%(?:{anyKeyRegex})|^)(?<suffix>[^%]*)";
         }
 
-        public ConversionPattern Parse(string pattern)
+        public static ConversionPattern Parse(string pattern)
         {
             var result = new ConversionPattern();
             if (string.IsNullOrEmpty(pattern))
