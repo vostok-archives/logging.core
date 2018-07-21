@@ -1,6 +1,6 @@
 ﻿namespace Vostok.Logging.Core
 {
-    public static class SafeConsole
+    public static class SafeConsole // TODO(krait): just check whether console exists
     {
         public static void TryWriteLine(string message)
         {

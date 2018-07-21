@@ -7,6 +7,10 @@ using Vostok.Logging.Abstractions;
 
 namespace Vostok.Logging.Core.ConversionPattern
 {
+    // CR(krait): This should be a simple data object without any logic inside.
+    // CR(krait): Rendering logic should be put to ConversionPatternRenderer.
+    // CR(krait): Modification logic (.AddFragment(), etc.) should be moved into a separate builder class.
+    // CR(krait): ToString() implementation could delegate its work to ConversionPatternParser so that all the knowledge of conversion pattern string format is incapsulated there.
     public class ConversionPattern
     {
         private const string DateTimeFormatString = "HH:mm:ss zzz";
@@ -19,6 +23,7 @@ namespace Vostok.Logging.Core.ConversionPattern
             fragments = new List<IConversionPatternFragment>();
         }
 
+        // CR(krait): We can be more specific here. .AddDateTime(), .AddLevel(), etc. That would be much easier to use.
         public ConversionPattern AddFragment(PatternPartType type, string suffix = null)
         {
             fragments.Add(
@@ -89,6 +94,7 @@ namespace Vostok.Logging.Core.ConversionPattern
         internal void Render(LogEvent @event, TextWriter writer) =>
             fragments.ForEach(f => f.Render(@event, writer));
 
+        // CR(krait): Let's get rid of this giant enum and make each type of fragment a class.
         private class Fragment : IConversionPatternFragment
         {
             public PatternPartType Type { get; set; }
@@ -157,6 +163,7 @@ namespace Vostok.Logging.Core.ConversionPattern
                 writer.Write("]");
             }
 
+            // CR(krait): It would be better to store prefixes in some Prefix class having a .ToString() method with all this logic. Then in conversion pattern it would be like %p(logging.prefix).
             private void TryWritePrefixes(IReadOnlyList<string> prefixes, TextWriter writer)
             {
                 for (var i = 0; i < prefixes.Count; i++)

@@ -34,7 +34,7 @@ namespace Vostok.Logging.Core.ConversionPattern
             if (string.IsNullOrEmpty(pattern))
                 return result;
 
-            var matches = Regex.Matches(pattern, RegexPattern, RegexOptions.IgnoreCase);
+            var matches = Regex.Matches(pattern, RegexPattern, RegexOptions.IgnoreCase); // CR(krait): Regex should be compiled.
             foreach (Match match in matches)
             {
                 var (type, prop, suffix) = ParseMatch(match, match.Index);
