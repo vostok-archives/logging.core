@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Vostok.Logging.Abstractions;
 
-namespace Vostok.Logging.Core
+namespace Vostok.Logging.Core.ConversionPattern
 {
     internal interface IConversionPatternRenderer
     {

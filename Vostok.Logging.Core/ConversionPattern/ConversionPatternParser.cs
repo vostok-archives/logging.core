@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Vostok.Logging.Core
+namespace Vostok.Logging.Core.ConversionPattern
 {
     internal class ConversionPatternParser : IConversionPatternParser
     {

@@ -1,4 +1,4 @@
-﻿namespace Vostok.Logging.Core
+﻿namespace Vostok.Logging.Core.ConversionPattern
 {
     public enum PatternPartType
     {

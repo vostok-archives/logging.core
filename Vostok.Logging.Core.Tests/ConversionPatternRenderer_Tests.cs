@@ -3,6 +3,7 @@ using System.IO;
 using FluentAssertions;
 using NUnit.Framework;
 using Vostok.Logging.Abstractions;
+using Vostok.Logging.Core.ConversionPattern;
 
 namespace Vostok.Logging.Core.Tests.New
 {
@@ -18,7 +19,7 @@ namespace Vostok.Logging.Core.Tests.New
 
             var dt = DateTime.Now;
             var logEvent = new LogEvent(LogLevel.Info, dt, "some message");
-            var pattern = new ConversionPattern()
+            var pattern = new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.DateTime);
             pattern.Render(logEvent, writer);
             writer.Flush();
@@ -33,7 +34,7 @@ namespace Vostok.Logging.Core.Tests.New
 
             var dt = DateTime.Now;
             var logEvent = new LogEvent(LogLevel.Info, dt, "some message");
-            var pattern = new ConversionPattern()
+            var pattern = new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.DateTime, "yyyy-MM-dd", null);
             pattern.Render(logEvent, writer);
             writer.Flush();
@@ -48,7 +49,7 @@ namespace Vostok.Logging.Core.Tests.New
 
             const string suffix = "suffix";
             var logEvent = DefaultEvent();
-            var pattern = new ConversionPattern()
+            var pattern = new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Level, suffix);
             pattern.Render(logEvent, writer);
             writer.Flush();
@@ -63,7 +64,7 @@ namespace Vostok.Logging.Core.Tests.New
 
             const string message = "some message";
             var logEvent = new LogEvent(LogLevel.Info, DateTime.Now, message);
-            var pattern = new ConversionPattern()
+            var pattern = new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Message);
             pattern.Render(logEvent, writer);
             writer.Flush();
@@ -78,7 +79,7 @@ namespace Vostok.Logging.Core.Tests.New
 
             var exception = new Exception("test");
             var logEvent = new LogEvent(LogLevel.Info, DateTime.Now, "some message", exception);
-            var pattern = new ConversionPattern()
+            var pattern = new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Exception);
             pattern.Render(logEvent, writer);
             writer.Flush();
@@ -92,7 +93,7 @@ namespace Vostok.Logging.Core.Tests.New
             var writer = new StringWriter();
 
             var logEvent = DefaultEvent();
-            var pattern = new ConversionPattern()
+            var pattern = new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.NewLine);
             pattern.Render(logEvent, writer);
             writer.Flush();
@@ -109,7 +110,7 @@ namespace Vostok.Logging.Core.Tests.New
             const string second = "second";
             var logEvent = DefaultEvent()
                 .WithProperty("prefix", new[]{first, second});
-            var pattern = new ConversionPattern()
+            var pattern = new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Prefix);
             pattern.Render(logEvent, writer);
             writer.Flush();
@@ -127,7 +128,7 @@ namespace Vostok.Logging.Core.Tests.New
             var logEvent = DefaultEvent()
                 .WithProperty(first, "value 1")
                 .WithProperty(second, "value 2");
-            var pattern = new ConversionPattern()
+            var pattern = new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Properties);
             pattern.Render(logEvent, writer);
             writer.Flush();
@@ -144,7 +145,7 @@ namespace Vostok.Logging.Core.Tests.New
             const string value = "value";
             var logEvent = DefaultEvent()
                 .WithProperty(prop, value);
-            var pattern = new ConversionPattern()
+            var pattern = new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Property, prop, null);
             pattern.Render(logEvent, writer);
             writer.Flush();
@@ -162,7 +163,7 @@ namespace Vostok.Logging.Core.Tests.New
             const string suffix = "SUFFIX";
             var logEvent = DefaultEvent()
                 .WithProperty(prop, value);
-            var pattern = new ConversionPattern()
+            var pattern = new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Property, prop, suffix);
             pattern.Render(logEvent, writer);
             writer.Flush();
@@ -177,7 +178,7 @@ namespace Vostok.Logging.Core.Tests.New
 
             const string suffix = "string start";
             var logEvent = DefaultEvent();
-            var pattern = new ConversionPattern()
+            var pattern = new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.StringStart, suffix);
             pattern.Render(logEvent, writer);
             writer.Flush();
@@ -198,7 +199,7 @@ namespace Vostok.Logging.Core.Tests.New
             const string propValue = "value";
             var logEvent = new LogEvent(LogLevel.Info, dt, message)
                 .WithProperty(prop, propValue);
-            var pattern = new ConversionPattern()
+            var pattern = new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.StringStart, start)
                 .AddFragment(PatternPartType.DateTime, dtFormat, " ")
                 .AddFragment(PatternPartType.Level, " ")

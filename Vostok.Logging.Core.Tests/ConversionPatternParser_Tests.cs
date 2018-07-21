@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using Vostok.Logging.Core.ConversionPattern;
 
 namespace Vostok.Logging.Core.Tests.New
 {
@@ -13,7 +14,7 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = new ConversionPatternParser().Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern()
+            new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.DateTime)
                 .ToString().Should().Be(pattern.ToString());
         }
@@ -26,7 +27,7 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = new ConversionPatternParser().Parse(format);
             pattern.ToString().Should().Be($"%d({dateFormat})");
 
-            new ConversionPattern()
+            new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.DateTime, dateFormat, null)
                 .ToString().Should().Be(pattern.ToString());
         }
@@ -39,7 +40,7 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = new ConversionPatternParser().Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern()
+            new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Level, suffix)
                 .ToString().Should().Be(pattern.ToString());
         }
@@ -51,7 +52,7 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = new ConversionPatternParser().Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern()
+            new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Message)
                 .ToString().Should().Be(pattern.ToString());
         }
@@ -63,7 +64,7 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = new ConversionPatternParser().Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern()
+            new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Exception)
                 .ToString().Should().Be(pattern.ToString());
         }
@@ -75,7 +76,7 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = new ConversionPatternParser().Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern()
+            new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.NewLine)
                 .ToString().Should().Be(pattern.ToString());
         }
@@ -87,7 +88,7 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = new ConversionPatternParser().Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern()
+            new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Prefix)
                 .ToString().Should().Be(pattern.ToString());
         }
@@ -99,7 +100,7 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = new ConversionPatternParser().Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern()
+            new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Properties)
                 .ToString().Should().Be(pattern.ToString());
         }
@@ -112,7 +113,7 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = new ConversionPatternParser().Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern()
+            new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Property, prop, null)
                 .ToString().Should().Be(pattern.ToString());
         }
@@ -126,7 +127,7 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = new ConversionPatternParser().Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern()
+            new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.Property, prop, suffix)
                 .ToString().Should().Be(pattern.ToString());
         }
@@ -138,7 +139,7 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = new ConversionPatternParser().Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern()
+            new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.StringStart, format)
                 .ToString().Should().Be(pattern.ToString());
         }
@@ -150,7 +151,7 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = new ConversionPatternParser().Parse(format);
             pattern.ToString().Should().Be("start %d(yyyy-MM-dd) %l %p(prop) message: %m%n");
 
-            new ConversionPattern()
+            new ConversionPattern.ConversionPattern()
                 .AddFragment(PatternPartType.StringStart, "start ")
                 .AddFragment(PatternPartType.DateTime, "yyyy-MM-dd", " ")
                 .AddFragment(PatternPartType.Level, " ")
