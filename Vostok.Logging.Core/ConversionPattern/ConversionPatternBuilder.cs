@@ -30,12 +30,6 @@ namespace Vostok.Logging.Core.ConversionPattern
             return this;
         }
 
-        public ConversionPatternBuilder AddPrefix(string suffix = null)
-        {
-            conversionPattern.Fragments.Add(new PrefixFragment(suffix));
-            return this;
-        }
-
         public ConversionPatternBuilder AddMessage(string suffix = null)
         {
             conversionPattern.Fragments.Add(new MessageFragment(suffix));

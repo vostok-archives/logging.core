@@ -102,23 +102,6 @@ namespace Vostok.Logging.Core.Tests
         }
 
         [Test]
-        public void Should_render_prefix()
-        {
-            var writer = new StringWriter();
-
-            const string first = "first";
-            const string second = "second";
-            var logEvent = DefaultEvent()
-                .WithProperty("prefix", new[]{first, second});
-            var pattern = new ConversionPatternBuilder()
-                .AddPrefix().ToPattern();
-            ConversionPatternRenderer.Render(pattern, logEvent, writer);
-            writer.Flush();
-
-            writer.ToString().Should().Be($"[{first}] [{second}]");
-        }
-
-        [Test]
         public void Should_render_properties()
         {
             var writer = new StringWriter();
@@ -223,7 +206,7 @@ namespace Vostok.Logging.Core.Tests
             const LogLevel level = LogLevel.Info;
             var logEvent = new LogEvent(LogLevel.Info, dt, null);
 
-            var pattern = ConversionPatternParser.Parse("a%da%la%xa%ma%ea%pa%p(prop)a%n");
+            var pattern = ConversionPatternParser.Parse("a%da%laa%ma%ea%pa%p(prop)a%n");
             var template = string.Format("a{0:HH:mm:ss zzz}a{1}a\r\n", dt, level);
             ConversionPatternRenderer.Render(pattern, logEvent, writer);
             writer.Flush();

@@ -19,7 +19,6 @@ namespace Vostok.Logging.Core.ConversionPattern
             {
                 {typeof (DateTimeFragment), ((builder, property, suffix) => builder.AddDateTime(suffix, property), @"d(?:\(([^)]*)\))?", "d")},
                 {typeof (LevelFragment), ((builder, _, suffix) => builder.AddLevel(suffix), "l", "l")},
-                {typeof (PrefixFragment), ((builder, _, suffix) => builder.AddPrefix(suffix), "x", "x")},
                 {typeof (MessageFragment), ((builder, _, suffix) => builder.AddMessage(suffix), "m", "m")},
                 {typeof (ExceptionFragment), ((builder, _, suffix) => builder.AddException(suffix), "e", "e")},
                 {typeof (PropertyFragment), ((builder, property, suffix) => builder.AddProperty(property, suffix), @"p\((\w*)\)", "p(")},

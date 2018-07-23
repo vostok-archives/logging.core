@@ -93,20 +93,6 @@ namespace Vostok.Logging.Core.Tests
         }
 
         [Test]
-        public void Should_parse_prefix()
-        {
-            const string format = "%x";
-            var pattern = ConversionPatternParser.Parse(format);
-            pattern.ToString().Should().Be(format);
-
-            ConversionPatternParser.ToString(
-                new ConversionPatternBuilder()
-                    .AddPrefix()
-                    .ToPattern())
-                .Should().Be(pattern.ToString());
-        }
-
-        [Test]
         public void Should_parse_properties()
         {
             const string format = "%p";
@@ -152,16 +138,15 @@ namespace Vostok.Logging.Core.Tests
         [Test]
         public void Should_parse_multiple_values_pattern()
         {
-            const string format = "start %D(yyyy-MM-dd) %l %x %p(prop) message: %M%N";
+            const string format = "start %D(yyyy-MM-dd) %l %p(prop) message: %M%N";
             var pattern = ConversionPatternParser.Parse(format);
-            pattern.ToString().Should().Be("start %d(yyyy-MM-dd) %l %x %p(prop) message: %m%n");
+            pattern.ToString().Should().Be("start %d(yyyy-MM-dd) %l %p(prop) message: %m%n");
 
             ConversionPatternParser.ToString(
                 new ConversionPatternBuilder()
                     .AddStringStart("start ")
                     .AddDateTime(" ", "yyyy-MM-dd")
                     .AddLevel(" ")
-                    .AddPrefix(" ")
                     .AddProperty("prop", " message: ")
                     .AddMessage()
                     .AddNewLine()
@@ -172,9 +157,9 @@ namespace Vostok.Logging.Core.Tests
         [Test]
         public void Should_parse_all_values_with_suffixes_except_NewLine()
         {
-            const string format = "X%dX%D(yyyy-MM-dd)X%lX%xX%mX%eX%pX%p(prop)X%NX";
+            const string format = "X%dX%D(yyyy-MM-dd)X%lXX%mX%eX%pX%p(prop)X%NX";
             var pattern = ConversionPatternParser.Parse(format);
-            pattern.ToString().Should().Be("X%dX%d(yyyy-MM-dd)X%lX%xX%mX%eX%pX%p(prop)X%n");
+            pattern.ToString().Should().Be("X%dX%d(yyyy-MM-dd)X%lXX%mX%eX%pX%p(prop)X%n");
 
             ConversionPatternParser.ToString(
                 new ConversionPatternBuilder()
@@ -182,7 +167,6 @@ namespace Vostok.Logging.Core.Tests
                     .AddDateTime("X")
                     .AddDateTime("X", "yyyy-MM-dd")
                     .AddLevel("X")
-                    .AddPrefix("X")
                     .AddMessage("X")
                     .AddException("X")
                     .AddProperties("X")
