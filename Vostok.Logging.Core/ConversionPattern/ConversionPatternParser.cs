@@ -2,51 +2,56 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Vostok.Logging.Core.ConversionPattern.Patterns;
 
 namespace Vostok.Logging.Core.ConversionPattern
 {
     public static class ConversionPatternParser
     {
-        private static readonly Dictionary<PatternPartType, (string pattern, string startsFrom)> PatternKeys;
-        private static readonly string RegexPattern;
+        private static readonly Dictionary<Type, (Action<ConversionPatternBuilder, string, string> ctor, string pattern, string startsFrom)> PatternKeys;
+        private static readonly Regex Regex;
 
         static ConversionPatternParser()
         {
-            PatternKeys = new Dictionary<PatternPartType, (string, string)>
+            PatternKeys = new Dictionary<Type, (Action<ConversionPatternBuilder, string, string>, string, string)>
             {
-                {PatternPartType.DateTime, (@"d(?:\(([^)]*)\))?", "d")},
-                {PatternPartType.Level, ("l", "l")},
-                {PatternPartType.Prefix, ("x", "x")},
-                {PatternPartType.Message, ("m", "m")},
-                {PatternPartType.Exception, ("e", "e")},
-                {PatternPartType.Property, (@"p\((\w*)\)", "p(")},
-                {PatternPartType.Properties, ("p", "p")},
-                {PatternPartType.NewLine, ("n", "n")},
+                {typeof (DateTimePattern), ((builder, property, suffix) => builder.AddDateTime(suffix, property), @"d(?:\(([^)]*)\))?", "d")},
+                {typeof (LevelPattern), ((builder, _, suffix) => builder.AddLevel(suffix), "l", "l")},
+                {typeof (PrefixPattern), ((builder, _, suffix) => builder.AddPrefix(suffix), "x", "x")},
+                {typeof (MessagePattern), ((builder, _, suffix) => builder.AddMessage(suffix), "m", "m")},
+                {typeof (ExceptionPattern), ((builder, _, suffix) => builder.AddException(suffix), "e", "e")},
+                {typeof (PropertyPattern), ((builder, property, suffix) => builder.AddProperty(property, suffix), @"p\((\w*)\)", "p(")},
+                {typeof (PropertiesPattern), ((builder, _, suffix) => builder.AddProperties(suffix), "p", "p")},
+                {typeof (NewLinePattern), ((builder, _, __) => builder.AddNewLine(), "n", "n")},
             };
 
             var anyKeyRegex = string.Join("|", PatternKeys.Values.Select(v => v.pattern));
-            RegexPattern = $"(?:%(?:{anyKeyRegex})|^)(?<suffix>[^%]*)";
+            var regexPattern = $"(?:%(?:{anyKeyRegex})|^)(?<suffix>[^%]*)";
+            Regex = new Regex(regexPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         }
 
         public static ConversionPattern Parse(string pattern)
         {
-            var result = new ConversionPattern();
+            var result = new ConversionPatternBuilder();
             if (string.IsNullOrEmpty(pattern))
-                return result;
+                return result.ToPattern();
 
-            var matches = Regex.Matches(pattern, RegexPattern, RegexOptions.IgnoreCase); // CR(krait): Regex should be compiled.
+            var matches = Regex.Matches(pattern);
             foreach (Match match in matches)
             {
                 var (type, prop, suffix) = ParseMatch(match, match.Index);
-                result.AddFragment(type, prop, suffix);
+                if (type == null)
+                    result.AddStringStart(suffix);
+                else
+                    PatternKeys[type].ctor(result, prop, suffix);
             }
 
-            return result;
+            return result.ToPattern();
         }
 
-        private static (PatternPartType type, string property, string suffix) ParseMatch(Match match, int matchOffset)
+        private static (Type type, string property, string suffix) ParseMatch(Match match, int matchOffset)
         {
-            var type = PatternPartType.StringStart;
+            Type type = null;
             var value = match.Value;
             foreach (var pair in PatternKeys)
             {
@@ -70,7 +75,7 @@ namespace Vostok.Logging.Core.ConversionPattern
                         property = gr.Value;
                         break;
                     }
-            
+
             return (type, property, suffix);
         }
     }

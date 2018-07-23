@@ -3,9 +3,9 @@ using Vostok.Logging.Abstractions;
 
 namespace Vostok.Logging.Core.ConversionPattern
 {
-    public class ConversionPatternRenderer : IConversionPatternRenderer
+    public static class ConversionPatternRenderer
     {
-        public void Render(ConversionPattern pattern, LogEvent @event, TextWriter writer) =>
-            pattern.Render(@event, writer);
+        public static void Render(ConversionPattern pattern, LogEvent @event, TextWriter writer) =>
+            pattern.Fragments.ForEach(f => f.Render(@event, writer));
     }
 }

@@ -3,7 +3,7 @@ using Vostok.Logging.Abstractions;
 
 namespace Vostok.Logging.Core.ConversionPattern
 {
-    internal interface IConversionPatternFragment
+    public interface IConversionPatternFragment
     {
         void Render(LogEvent @event, TextWriter writer);
     }

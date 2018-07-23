@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using Vostok.Logging.Core.ConversionPattern;
 
-namespace Vostok.Logging.Core.Tests.New
+namespace Vostok.Logging.Core.Tests
 {
     [TestFixture]
     public class ConversionPatternParser_Tests
@@ -14,9 +14,9 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern.ConversionPattern()
-                .AddFragment(PatternPartType.DateTime)
-                .ToString().Should().Be(pattern.ToString());
+            new ConversionPatternBuilder()
+                .AddDateTime()
+                .ToPattern().ToString().Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -27,22 +27,21 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be($"%d({dateFormat})");
 
-            new ConversionPattern.ConversionPattern()
-                .AddFragment(PatternPartType.DateTime, dateFormat, null)
-                .ToString().Should().Be(pattern.ToString());
+            new ConversionPatternBuilder()
+                .AddDateTime(null, dateFormat)
+                .ToPattern().ToString().Should().Be(pattern.ToString());
         }
 
         [Test]
-        public void Should_parse_level_with_suffix()
+        public void Should_parse_level()
         {
-            const string suffix = "suffix";
-            var format = $"%l{suffix}";
+            var format = "%l";
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern.ConversionPattern()
-                .AddFragment(PatternPartType.Level, suffix)
-                .ToString().Should().Be(pattern.ToString());
+            new ConversionPatternBuilder()
+                .AddLevel()
+                .ToPattern().ToString().Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -52,9 +51,9 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern.ConversionPattern()
-                .AddFragment(PatternPartType.Message)
-                .ToString().Should().Be(pattern.ToString());
+            new ConversionPatternBuilder()
+                .AddMessage()
+                .ToPattern().ToString().Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -64,9 +63,9 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern.ConversionPattern()
-                .AddFragment(PatternPartType.Exception)
-                .ToString().Should().Be(pattern.ToString());
+            new ConversionPatternBuilder()
+                .AddException()
+                .ToPattern().ToString().Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -76,9 +75,9 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern.ConversionPattern()
-                .AddFragment(PatternPartType.NewLine)
-                .ToString().Should().Be(pattern.ToString());
+            new ConversionPatternBuilder()
+                .AddNewLine()
+                .ToPattern().ToString().Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -88,9 +87,9 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern.ConversionPattern()
-                .AddFragment(PatternPartType.Prefix)
-                .ToString().Should().Be(pattern.ToString());
+            new ConversionPatternBuilder()
+                .AddPrefix()
+                .ToPattern().ToString().Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -100,9 +99,9 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern.ConversionPattern()
-                .AddFragment(PatternPartType.Properties)
-                .ToString().Should().Be(pattern.ToString());
+            new ConversionPatternBuilder()
+                .AddProperties()
+                .ToPattern().ToString().Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -113,23 +112,9 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern.ConversionPattern()
-                .AddFragment(PatternPartType.Property, prop, null)
-                .ToString().Should().Be(pattern.ToString());
-        }
-
-        [Test]
-        public void Should_parse_property_with_suffix()
-        {
-            const string prop = "prop";
-            const string suffix = "SUFFIX";
-            var format = $"%p({prop}){suffix}";
-            var pattern = ConversionPatternParser.Parse(format);
-            pattern.ToString().Should().Be(format);
-
-            new ConversionPattern.ConversionPattern()
-                .AddFragment(PatternPartType.Property, prop, suffix)
-                .ToString().Should().Be(pattern.ToString());
+            new ConversionPatternBuilder()
+                .AddProperty(prop)
+                .ToPattern().ToString().Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -139,26 +124,56 @@ namespace Vostok.Logging.Core.Tests.New
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPattern.ConversionPattern()
-                .AddFragment(PatternPartType.StringStart, format)
-                .ToString().Should().Be(pattern.ToString());
+            new ConversionPatternBuilder()
+                .AddStringStart(format)
+                .ToPattern().ToString().Should().Be(pattern.ToString());
         }
 
         [Test]
         public void Should_parse_multiple_values_pattern()
         {
-            const string format = "start %D(yyyy-MM-dd) %l %p(prop) message: %M%N";
+            const string format = "start %D(yyyy-MM-dd) %l %x %p(prop) message: %M%N";
             var pattern = ConversionPatternParser.Parse(format);
-            pattern.ToString().Should().Be("start %d(yyyy-MM-dd) %l %p(prop) message: %m%n");
+            pattern.ToString().Should().Be("start %d(yyyy-MM-dd) %l %x %p(prop) message: %m%n");
 
-            new ConversionPattern.ConversionPattern()
-                .AddFragment(PatternPartType.StringStart, "start ")
-                .AddFragment(PatternPartType.DateTime, "yyyy-MM-dd", " ")
-                .AddFragment(PatternPartType.Level, " ")
-                .AddFragment(PatternPartType.Property, "prop", " message: ")
-                .AddFragment(PatternPartType.Message)
-                .AddFragment(PatternPartType.NewLine)
-                .ToString().Should().Be(pattern.ToString());
+            new ConversionPatternBuilder()
+                .AddStringStart("start ")
+                .AddDateTime(" ", "yyyy-MM-dd")
+                .AddLevel(" ")
+                .AddPrefix(" ")
+                .AddProperty("prop", " message: ")
+                .AddMessage()
+                .AddNewLine()
+                .ToPattern().ToString().Should().Be(pattern.ToString());
+        }
+
+        [Test]
+        public void Should_parse_all_values_with_suffixes_except_NewLine()
+        {
+            const string format = "X%dX%D(yyyy-MM-dd)X%lX%xX%mX%eX%pX%p(prop)X%NX";
+            var pattern = ConversionPatternParser.Parse(format);
+            pattern.ToString().Should().Be("X%dX%d(yyyy-MM-dd)X%lX%xX%mX%eX%pX%p(prop)X%n");
+
+            new ConversionPatternBuilder()
+                .AddStringStart("X")
+                .AddDateTime("X")
+                .AddDateTime("X", "yyyy-MM-dd")
+                .AddLevel("X")
+                .AddPrefix("X")
+                .AddMessage("X")
+                .AddException("X")
+                .AddProperties("X")
+                .AddProperty("prop", "X")
+                .AddNewLine()
+                .ToPattern().ToString().Should().Be(pattern.ToString());
+        }
+
+        [Test]
+        public void Should_render_only_template_string_if_it_not_contains_any_keys()
+        {
+            const string format = "abc";
+            var pattern = ConversionPatternParser.Parse(format);
+            pattern.ToString().Should().Be("abc");
         }
     }
 }

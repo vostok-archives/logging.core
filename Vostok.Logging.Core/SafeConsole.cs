@@ -1,12 +1,15 @@
-﻿namespace Vostok.Logging.Core
+﻿using System;
+
+namespace Vostok.Logging.Core
 {
-    public static class SafeConsole // TODO(krait): just check whether console exists
+    public static class SafeConsole
     {
         public static void TryWriteLine(string message)
         {
             try
             {
-                System.Console.Out.WriteLine(message);
+                if (ConsoleExists)
+                    Console.Out.WriteLine(message);
             }
             catch
             {
@@ -14,16 +17,15 @@
             }
         }
 
-        public static void TryWriteLine(object obj)
-        {
+        public static void TryWriteLine(object obj) =>
             TryWriteLine(obj?.ToString());
-        }
 
         public static void TryWrite(string message)
         {
             try
             {
-                System.Console.Out.Write(message);
+                if (ConsoleExists)
+                    Console.Out.Write(message);
             }
             catch
             {
@@ -31,9 +33,9 @@
             }
         }
 
-        public static void TryWrite(object obj)
-        {
+        public static void TryWrite(object obj) =>
             TryWrite(obj?.ToString());
-        }
+
+        private static bool ConsoleExists => Environment.UserInteractive && Console.Title.Length > 0;
     }
 }
