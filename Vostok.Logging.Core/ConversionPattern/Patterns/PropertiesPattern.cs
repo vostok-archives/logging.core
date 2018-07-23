@@ -4,22 +4,22 @@ using Vostok.Logging.Abstractions;
 
 namespace Vostok.Logging.Core.ConversionPattern.Patterns
 {
-    public class PropertiesPattern : IConversionPatternFragment
+    internal class PropertiesPattern : IConversionPatternFragment
     {
-        private readonly string suffix;
-
         public PropertiesPattern(string suffix = null)
         {
-            this.suffix = suffix ?? string.Empty;
+            Suffix = suffix ?? string.Empty;
         }
+
+        public string Suffix { get; }
+
+        string IConversionPatternFragment.Property => null;
 
         public void Render(LogEvent @event, TextWriter writer)
         {
             if (TryWriteProperties(@event.Properties, writer))
-                writer.Write(suffix);
+                writer.Write(Suffix);
         }
-
-        public override string ToString() => "%p" + suffix;
 
         private static bool TryWriteProperties(IReadOnlyDictionary<string, object> properties, TextWriter writer)
         {

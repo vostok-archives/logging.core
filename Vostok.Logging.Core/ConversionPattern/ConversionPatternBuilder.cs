@@ -1,5 +1,4 @@
-﻿using System;
-using Vostok.Logging.Core.ConversionPattern.Patterns;
+﻿using Vostok.Logging.Core.ConversionPattern.Patterns;
 
 namespace Vostok.Logging.Core.ConversionPattern
 {

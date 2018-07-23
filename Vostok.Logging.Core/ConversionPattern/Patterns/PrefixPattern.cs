@@ -4,15 +4,18 @@ using Vostok.Logging.Abstractions;
 
 namespace Vostok.Logging.Core.ConversionPattern.Patterns
 {
-    public class PrefixPattern : IConversionPatternFragment
+    internal class PrefixPattern : IConversionPatternFragment
     {
         private const string PrefixPropertyName = "prefix";
-        private readonly string suffix;
 
         public PrefixPattern(string suffix = null)
         {
-            this.suffix = suffix ?? string.Empty;
+            Suffix = suffix ?? string.Empty;
         }
+
+        public string Suffix { get; }
+
+        string IConversionPatternFragment.Property => null;
 
         public void Render(LogEvent @event, TextWriter writer)
         {
@@ -20,11 +23,9 @@ namespace Vostok.Logging.Core.ConversionPattern.Patterns
             if (prefixProperty is IReadOnlyList<string> prefixes)
             {
                 TryWritePrefixes(prefixes, writer);
-               writer.Write(suffix);
+                writer.Write(Suffix);
             }
         }
-
-        public override string ToString() => "%x" + suffix;
 
         private void TryWritePrefixes(IReadOnlyList<string> prefixes, TextWriter writer)
         {

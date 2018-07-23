@@ -14,9 +14,11 @@ namespace Vostok.Logging.Core.Tests
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPatternBuilder()
-                .AddDateTime()
-                .ToPattern().ToString().Should().Be(pattern.ToString());
+            ConversionPatternParser.ToString(
+                new ConversionPatternBuilder()
+                    .AddDateTime()
+                    .ToPattern())
+                .Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -27,9 +29,11 @@ namespace Vostok.Logging.Core.Tests
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be($"%d({dateFormat})");
 
-            new ConversionPatternBuilder()
-                .AddDateTime(null, dateFormat)
-                .ToPattern().ToString().Should().Be(pattern.ToString());
+            ConversionPatternParser.ToString(
+                new ConversionPatternBuilder()
+                    .AddDateTime(null, dateFormat)
+                    .ToPattern())
+                .Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -39,9 +43,11 @@ namespace Vostok.Logging.Core.Tests
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPatternBuilder()
-                .AddLevel()
-                .ToPattern().ToString().Should().Be(pattern.ToString());
+            ConversionPatternParser.ToString(
+                new ConversionPatternBuilder()
+                    .AddLevel()
+                    .ToPattern()
+                ).Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -51,9 +57,11 @@ namespace Vostok.Logging.Core.Tests
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPatternBuilder()
-                .AddMessage()
-                .ToPattern().ToString().Should().Be(pattern.ToString());
+            ConversionPatternParser.ToString(
+                new ConversionPatternBuilder()
+                    .AddMessage()
+                    .ToPattern())
+                .Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -63,9 +71,11 @@ namespace Vostok.Logging.Core.Tests
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPatternBuilder()
-                .AddException()
-                .ToPattern().ToString().Should().Be(pattern.ToString());
+            ConversionPatternParser.ToString(
+                new ConversionPatternBuilder()
+                    .AddException()
+                    .ToPattern())
+                .Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -75,9 +85,11 @@ namespace Vostok.Logging.Core.Tests
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPatternBuilder()
-                .AddNewLine()
-                .ToPattern().ToString().Should().Be(pattern.ToString());
+            ConversionPatternParser.ToString(
+                new ConversionPatternBuilder()
+                    .AddNewLine()
+                    .ToPattern())
+                .Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -87,9 +99,11 @@ namespace Vostok.Logging.Core.Tests
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPatternBuilder()
-                .AddPrefix()
-                .ToPattern().ToString().Should().Be(pattern.ToString());
+            ConversionPatternParser.ToString(
+                new ConversionPatternBuilder()
+                    .AddPrefix()
+                    .ToPattern())
+                .Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -99,9 +113,11 @@ namespace Vostok.Logging.Core.Tests
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPatternBuilder()
-                .AddProperties()
-                .ToPattern().ToString().Should().Be(pattern.ToString());
+            ConversionPatternParser.ToString(
+                new ConversionPatternBuilder()
+                    .AddProperties()
+                    .ToPattern())
+                .Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -112,9 +128,11 @@ namespace Vostok.Logging.Core.Tests
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPatternBuilder()
-                .AddProperty(prop)
-                .ToPattern().ToString().Should().Be(pattern.ToString());
+            ConversionPatternParser.ToString(
+                new ConversionPatternBuilder()
+                    .AddProperty(prop)
+                    .ToPattern())
+                .Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -124,9 +142,11 @@ namespace Vostok.Logging.Core.Tests
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be(format);
 
-            new ConversionPatternBuilder()
-                .AddStringStart(format)
-                .ToPattern().ToString().Should().Be(pattern.ToString());
+            ConversionPatternParser.ToString(
+                new ConversionPatternBuilder()
+                    .AddStringStart(format)
+                    .ToPattern())
+                .Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -136,15 +156,17 @@ namespace Vostok.Logging.Core.Tests
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be("start %d(yyyy-MM-dd) %l %x %p(prop) message: %m%n");
 
-            new ConversionPatternBuilder()
-                .AddStringStart("start ")
-                .AddDateTime(" ", "yyyy-MM-dd")
-                .AddLevel(" ")
-                .AddPrefix(" ")
-                .AddProperty("prop", " message: ")
-                .AddMessage()
-                .AddNewLine()
-                .ToPattern().ToString().Should().Be(pattern.ToString());
+            ConversionPatternParser.ToString(
+                new ConversionPatternBuilder()
+                    .AddStringStart("start ")
+                    .AddDateTime(" ", "yyyy-MM-dd")
+                    .AddLevel(" ")
+                    .AddPrefix(" ")
+                    .AddProperty("prop", " message: ")
+                    .AddMessage()
+                    .AddNewLine()
+                    .ToPattern())
+                .Should().Be(pattern.ToString());
         }
 
         [Test]
@@ -154,18 +176,20 @@ namespace Vostok.Logging.Core.Tests
             var pattern = ConversionPatternParser.Parse(format);
             pattern.ToString().Should().Be("X%dX%d(yyyy-MM-dd)X%lX%xX%mX%eX%pX%p(prop)X%n");
 
-            new ConversionPatternBuilder()
-                .AddStringStart("X")
-                .AddDateTime("X")
-                .AddDateTime("X", "yyyy-MM-dd")
-                .AddLevel("X")
-                .AddPrefix("X")
-                .AddMessage("X")
-                .AddException("X")
-                .AddProperties("X")
-                .AddProperty("prop", "X")
-                .AddNewLine()
-                .ToPattern().ToString().Should().Be(pattern.ToString());
+            ConversionPatternParser.ToString(
+                new ConversionPatternBuilder()
+                    .AddStringStart("X")
+                    .AddDateTime("X")
+                    .AddDateTime("X", "yyyy-MM-dd")
+                    .AddLevel("X")
+                    .AddPrefix("X")
+                    .AddMessage("X")
+                    .AddException("X")
+                    .AddProperties("X")
+                    .AddProperty("prop", "X")
+                    .AddNewLine()
+                    .ToPattern())
+                .Should().Be(pattern.ToString());
         }
 
         [Test]

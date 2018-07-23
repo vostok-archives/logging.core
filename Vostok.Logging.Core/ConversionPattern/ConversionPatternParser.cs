@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Vostok.Logging.Core.ConversionPattern.Patterns;
 
@@ -47,6 +48,23 @@ namespace Vostok.Logging.Core.ConversionPattern
             }
 
             return result.ToPattern();
+        }
+
+        public static string ToString(ConversionPattern pattern)
+        {
+            var sb = new StringBuilder();
+            foreach (var fragment in pattern.Fragments)
+            {
+                if (PatternKeys.TryGetValue(fragment.GetType(), out var value))
+                    sb.Append("%" + value.startsFrom);
+                if (value.startsFrom != null && value.startsFrom.EndsWith("("))
+                    sb.Remove(sb.Length - 1, 1);
+                if (!string.IsNullOrEmpty(fragment.Property))
+                    sb.Append($"({fragment.Property})");
+                sb.Append(fragment.Suffix);
+            }
+
+            return sb.ToString();
         }
 
         private static (Type type, string property, string suffix) ParseMatch(Match match, int matchOffset)

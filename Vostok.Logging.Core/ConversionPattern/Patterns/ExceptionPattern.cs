@@ -3,21 +3,21 @@ using Vostok.Logging.Abstractions;
 
 namespace Vostok.Logging.Core.ConversionPattern.Patterns
 {
-    public class ExceptionPattern : IConversionPatternFragment
+    internal class ExceptionPattern : IConversionPatternFragment
     {
-        private readonly string suffix;
-
         public ExceptionPattern(string suffix = null)
         {
-            this.suffix = suffix ?? string.Empty;
+            Suffix = suffix ?? string.Empty;
         }
+
+        public string Suffix { get; }
+
+        string IConversionPatternFragment.Property => null;
 
         public void Render(LogEvent @event, TextWriter writer)
         {
             if (@event.Exception != null)
-                writer.Write(@event.Exception + suffix);
+                writer.Write(@event.Exception + Suffix);
         }
-
-        public override string ToString() => "%e" + suffix;
     }
 }

@@ -3,18 +3,18 @@ using Vostok.Logging.Abstractions;
 
 namespace Vostok.Logging.Core.ConversionPattern.Patterns
 {
-    public class LevelPattern : IConversionPatternFragment
+    internal class LevelPattern : IConversionPatternFragment
     {
-        private readonly string suffix;
-
         public LevelPattern(string suffix = null)
         {
-            this.suffix = suffix ?? string.Empty;
+            Suffix = suffix ?? string.Empty;
         }
 
-        public void Render(LogEvent @event, TextWriter writer) =>
-            writer.Write(@event.Level + suffix);
+        public string Suffix { get; }
 
-        public override string ToString() => "%l" + suffix;
+        string IConversionPatternFragment.Property => null;
+
+        public void Render(LogEvent @event, TextWriter writer) =>
+            writer.Write(@event.Level + Suffix);
     }
 }

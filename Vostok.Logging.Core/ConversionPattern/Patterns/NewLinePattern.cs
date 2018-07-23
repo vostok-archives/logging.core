@@ -4,11 +4,12 @@ using Vostok.Logging.Abstractions;
 
 namespace Vostok.Logging.Core.ConversionPattern.Patterns
 {
-    public class NewLinePattern : IConversionPatternFragment
+    internal class NewLinePattern : IConversionPatternFragment
     {
+        string IConversionPatternFragment.Property => null;
+        string IConversionPatternFragment.Suffix => null;
+
         public void Render(LogEvent @event, TextWriter writer) =>
             writer.Write(Environment.NewLine);
-
-        public override string ToString() => "%n";
     }
 }

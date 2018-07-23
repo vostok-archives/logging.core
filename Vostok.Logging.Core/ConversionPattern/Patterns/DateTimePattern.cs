@@ -3,26 +3,24 @@ using Vostok.Logging.Abstractions;
 
 namespace Vostok.Logging.Core.ConversionPattern.Patterns
 {
-    public class DateTimePattern : IConversionPatternFragment
+    internal class DateTimePattern : IConversionPatternFragment
     {
         private const string DateTimeFormatString = "HH:mm:ss zzz";
-        private readonly string format;
-        private readonly string suffix;
 
         public DateTimePattern(string suffix = null, string format = null)
         {
-            this.suffix = suffix ?? string.Empty;
-            this.format = format;
+            Suffix = suffix ?? string.Empty;
+            Property = format;
         }
+
+        public string Property { get; }
+        public string Suffix { get; }
 
         public void Render(LogEvent @event, TextWriter writer) =>
             writer.Write(
                 @event.Timestamp.ToString(
-                    string.IsNullOrEmpty(format)
+                    string.IsNullOrEmpty(Property)
                         ? DateTimeFormatString
-                        : format) + suffix);
-
-        public override string ToString() =>
-            PatternsHelper.ToString("%d", format, suffix);
+                        : Property) + Suffix);
     }
 }
