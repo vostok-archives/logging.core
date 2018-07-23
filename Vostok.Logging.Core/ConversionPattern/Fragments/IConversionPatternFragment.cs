@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using Vostok.Logging.Abstractions;
 
-namespace Vostok.Logging.Core.ConversionPattern
+namespace Vostok.Logging.Core.ConversionPattern.Fragments
 {
-    public interface IConversionPatternFragment
+    internal interface IConversionPatternFragment
     {
         string Property { get; }
         string Suffix { get; }

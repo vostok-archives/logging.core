@@ -5,7 +5,10 @@ namespace Vostok.Logging.Core.ConversionPattern
 {
     public static class ConversionPatternRenderer
     {
-        public static void Render(ConversionPattern pattern, LogEvent @event, TextWriter writer) =>
-            pattern.Fragments.ForEach(f => f.Render(@event, writer));
+        public static void Render(ConversionPattern pattern, LogEvent @event, TextWriter writer)
+        {
+            foreach (var f in pattern.Fragments)
+                f.Render(@event, writer);
+        }
     }
 }

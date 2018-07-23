@@ -2,11 +2,11 @@
 using System.IO;
 using Vostok.Logging.Abstractions;
 
-namespace Vostok.Logging.Core.ConversionPattern.Patterns
+namespace Vostok.Logging.Core.ConversionPattern.Fragments
 {
-    internal class PropertiesPattern : IConversionPatternFragment
+    internal class PropertiesFragment : IConversionPatternFragment
     {
-        public PropertiesPattern(string suffix = null)
+        public PropertiesFragment(string suffix = null)
         {
             Suffix = suffix ?? string.Empty;
         }
@@ -34,7 +34,7 @@ namespace Vostok.Logging.Core.ConversionPattern.Patterns
             foreach (var pair in properties)
             {
                 writer.Write(pair.Key + " = ");
-                PatternsHelper.TryWriteProperty(pair.Value, writer);
+                FragmentsHelper.TryWriteProperty(pair.Value, writer);
                 if (i++ < len - 1)
                     writer.Write(", ");
             }

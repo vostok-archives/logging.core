@@ -1,7 +1,8 @@
-﻿using Vostok.Logging.Core.ConversionPattern.Patterns;
+﻿using Vostok.Logging.Core.ConversionPattern.Fragments;
 
 namespace Vostok.Logging.Core.ConversionPattern
 {
+    // TODO(krait): xml doc
     public class ConversionPatternBuilder
     {
         private readonly ConversionPattern conversionPattern;
@@ -13,55 +14,55 @@ namespace Vostok.Logging.Core.ConversionPattern
 
         public ConversionPatternBuilder AddStringStart(string @string = null)
         {
-            conversionPattern.Fragments.Add(new StringStartPattern(@string));
+            conversionPattern.Fragments.Add(new StringStartFragment(@string));
             return this;
         }
 
-        public ConversionPatternBuilder AddDateTime(string suffix = null, string format = null)
+        public ConversionPatternBuilder AddDateTime(string format = null, string suffix = null)
         {
-            conversionPattern.Fragments.Add(new DateTimePattern(suffix, format));
+            conversionPattern.Fragments.Add(new DateTimeFragment(suffix, format));
             return this;
         }
 
         public ConversionPatternBuilder AddLevel(string suffix = null)
         {
-            conversionPattern.Fragments.Add(new LevelPattern(suffix));
+            conversionPattern.Fragments.Add(new LevelFragment(suffix));
             return this;
         }
 
         public ConversionPatternBuilder AddPrefix(string suffix = null)
         {
-            conversionPattern.Fragments.Add(new PrefixPattern(suffix));
+            conversionPattern.Fragments.Add(new PrefixFragment(suffix));
             return this;
         }
 
         public ConversionPatternBuilder AddMessage(string suffix = null)
         {
-            conversionPattern.Fragments.Add(new MessagePattern(suffix));
+            conversionPattern.Fragments.Add(new MessageFragment(suffix));
             return this;
         }
 
         public ConversionPatternBuilder AddException(string suffix = null)
         {
-            conversionPattern.Fragments.Add(new ExceptionPattern(suffix));
+            conversionPattern.Fragments.Add(new ExceptionFragment(suffix));
             return this;
         }
 
         public ConversionPatternBuilder AddProperties(string suffix = null)
         {
-            conversionPattern.Fragments.Add(new PropertiesPattern(suffix));
+            conversionPattern.Fragments.Add(new PropertiesFragment(suffix));
             return this;
         }
 
         public ConversionPatternBuilder AddProperty(string propertyName, string suffix = null)
         {
-            conversionPattern.Fragments.Add(new PropertyPattern(propertyName, suffix));
+            conversionPattern.Fragments.Add(new PropertyFragment(propertyName, suffix));
             return this;
         }
 
         public ConversionPatternBuilder AddNewLine()
         {
-            conversionPattern.Fragments.Add(new NewLinePattern());
+            conversionPattern.Fragments.Add(new NewLineFragment());
             return this;
         }
 

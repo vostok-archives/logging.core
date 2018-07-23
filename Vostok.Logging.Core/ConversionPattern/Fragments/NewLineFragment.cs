@@ -2,9 +2,9 @@
 using System.IO;
 using Vostok.Logging.Abstractions;
 
-namespace Vostok.Logging.Core.ConversionPattern.Patterns
+namespace Vostok.Logging.Core.ConversionPattern.Fragments
 {
-    internal class NewLinePattern : IConversionPatternFragment
+    internal class NewLineFragment : IConversionPatternFragment
     {
         string IConversionPatternFragment.Property => null;
         string IConversionPatternFragment.Suffix => null;

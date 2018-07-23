@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using Vostok.Logging.Abstractions;
 
-namespace Vostok.Logging.Core.ConversionPattern.Patterns
+namespace Vostok.Logging.Core.ConversionPattern.Fragments
 {
-    internal class ExceptionPattern : IConversionPatternFragment
+    internal class MessageFragment : IConversionPatternFragment
     {
-        public ExceptionPattern(string suffix = null)
+        public MessageFragment(string suffix = null)
         {
             Suffix = suffix ?? string.Empty;
         }
@@ -16,8 +16,8 @@ namespace Vostok.Logging.Core.ConversionPattern.Patterns
 
         public void Render(LogEvent @event, TextWriter writer)
         {
-            if (@event.Exception != null)
-                writer.Write(@event.Exception + Suffix);
+            if (@event.MessageTemplate != null)
+                writer.Write(@event.MessageTemplate + Suffix);
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿using System.IO;
 using Vostok.Logging.Abstractions;
 
-namespace Vostok.Logging.Core.ConversionPattern.Patterns
+namespace Vostok.Logging.Core.ConversionPattern.Fragments
 {
-    internal class DateTimePattern : IConversionPatternFragment
+    internal class DateTimeFragment : IConversionPatternFragment
     {
         private const string DateTimeFormatString = "HH:mm:ss zzz";
 
-        public DateTimePattern(string suffix = null, string format = null)
+        public DateTimeFragment(string suffix = null, string format = null)
         {
             Suffix = suffix ?? string.Empty;
             Property = format;

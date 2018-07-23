@@ -3,9 +3,9 @@ using System.Globalization;
 using System.IO;
 using Vostok.Logging.Abstractions;
 
-namespace Vostok.Logging.Core.ConversionPattern.Patterns
+namespace Vostok.Logging.Core.ConversionPattern.Fragments
 {
-    internal static class PatternsHelper
+    internal static class FragmentsHelper
     {
         public static object GetPropertyOrNull(LogEvent @event, string propertyName) =>
             @event.Properties == null

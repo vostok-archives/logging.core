@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using Vostok.Logging.Abstractions;
 
-namespace Vostok.Logging.Core.ConversionPattern.Patterns
+namespace Vostok.Logging.Core.ConversionPattern.Fragments
 {
-    internal class StringStartPattern : IConversionPatternFragment
+    internal class StringStartFragment : IConversionPatternFragment
     {
-        public StringStartPattern(string @string = null)
+        public StringStartFragment(string @string = null)
         {
             Suffix = @string ?? string.Empty;
         }

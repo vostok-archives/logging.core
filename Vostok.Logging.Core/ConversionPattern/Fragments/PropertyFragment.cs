@@ -2,11 +2,11 @@
 using System.IO;
 using Vostok.Logging.Abstractions;
 
-namespace Vostok.Logging.Core.ConversionPattern.Patterns
+namespace Vostok.Logging.Core.ConversionPattern.Fragments
 {
-    internal class PropertyPattern : IConversionPatternFragment
+    internal class PropertyFragment : IConversionPatternFragment
     {
-        public PropertyPattern(string propertyName, string suffix = null)
+        public PropertyFragment(string propertyName, string suffix = null)
         {
             if (string.IsNullOrEmpty(propertyName))
                 throw new ArgumentNullException($"{nameof(propertyName)} must not be null or empty!");
@@ -19,10 +19,10 @@ namespace Vostok.Logging.Core.ConversionPattern.Patterns
 
         public void Render(LogEvent @event, TextWriter writer)
         {
-            var prop = PatternsHelper.GetPropertyOrNull(@event, Property);
+            var prop = FragmentsHelper.GetPropertyOrNull(@event, Property);
             if (prop != null)
             {
-                PatternsHelper.TryWriteProperty(prop, writer);
+                FragmentsHelper.TryWriteProperty(prop, writer);
                 writer.Write(Suffix);
             }
         }
