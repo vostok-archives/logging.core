@@ -2,7 +2,7 @@
 
 namespace Vostok.Logging.Core
 {
-    // TODO(krait): xml doc
+    // CR(iloktionov): Remove it from logging.core as it's primarily needed in logging.file.
     public static class SafeConsole
     {
         public static void TryWriteLine(string message)

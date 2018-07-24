@@ -10,4 +10,4 @@ namespace Vostok.Logging.Core.ConversionPattern.Fragments
 
         void Render(LogEvent @event, TextWriter writer);
     }
-}
+}   
