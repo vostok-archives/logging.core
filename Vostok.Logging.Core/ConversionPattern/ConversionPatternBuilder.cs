@@ -11,6 +11,15 @@ namespace Vostok.Logging.Core.ConversionPattern
             conversionPattern = new ConversionPattern();
         }
 
+        public ConversionPatternBuilder Default() =>
+            new ConversionPatternBuilder()
+                .AddDateTime(" ")
+                .AddLevel(" ")
+                .AddPrefix(" ")
+                .AddMessage(" ") // todo(Mansiper): we'll get space in the end of line if have no exception
+                .AddException()
+                .AddNewLine();
+
         public ConversionPatternBuilder AddStringStart(string @string = null)
         {
             conversionPattern.Fragments.Add(new StringStartPattern(@string));

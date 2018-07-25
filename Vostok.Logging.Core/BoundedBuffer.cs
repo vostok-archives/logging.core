@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Vostok.Logging.Core
 {
     // CR(iloktionov): There's a deadly race when Drain() does not see some fresh items, but count was already incremented.
-    internal class BoundedBuffer<T>
+    public class BoundedBuffer<T>
         where T : class
     {
         private readonly T[] items;
