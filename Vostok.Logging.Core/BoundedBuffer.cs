@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Vostok.Logging.Core
 {
-    // CR(iloktionov): There's a deadly race when Drain() does not see some fresh items, but count was already incremented.
+    // TODO(krait): Add some hardcore smoke tests.
     internal class BoundedBuffer<T>
         where T : class
     {
@@ -39,10 +39,8 @@ namespace Vostok.Logging.Core
                         if (Interlocked.CompareExchange(ref frontPtr, (currentFrontPtr + 1) % items.Length, currentFrontPtr) == currentFrontPtr)
                         {
                             items[currentFrontPtr] = item;
-                            if (currentCount == 0)
-                            {
-                                canDrainAsync.TrySetResult(true);
-                            }
+
+                            canDrainAsync.TrySetResult(true);
 
                             return true;
                         }
@@ -51,12 +49,13 @@ namespace Vostok.Logging.Core
             }
         }
 
+        // TODO(krait): FIX USAGES: this is not guaranteed to drain all events.
         public int Drain(T[] buffer, int index, int count)
         {
             if (itemsCount == 0)
                 return 0;
 
-            canDrainAsync = new TaskCompletionSource<bool>(); // TODO(krait): check correctness
+            canDrainAsync = new TaskCompletionSource<bool>();
 
             var resultCount = 0;
 

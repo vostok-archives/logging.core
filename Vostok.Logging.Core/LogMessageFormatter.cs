@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 using JetBrains.Annotations;
+using Vostok.Logging.Abstractions;
 using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Core
@@ -14,13 +15,10 @@ namespace Vostok.Logging.Core
     [PublicAPI]
     public static class LogMessageFormatter
     {
-        // TODO(krait): move this doc to LogEvent.MessageTemplate prop's doc
+        // TODO(krait): Can't it render messages directly to TextWriter? But let's not change it yet..
         /// <summary>
         /// <para>Renders the template to a fully formed log message, replacing placeholders with values from <paramref name="properties"/>.</para>
-        /// <para>A placeholder is a string between curly braces that is a key in the <paramref name="properties"/> dictionary.</para>
-        /// <para>For example, the template "foo{0} {key}" and properties { '0': 'bar', 'key': 'baz' } produce the follwing output: "foobar baz".</para>
-        /// <para>Use double curly braces to escape curly braces in text: "{{key}}", { 'key': 'value' } --> "{{key}}".</para>
-        /// <para>Any mismatched braces or nonexistent keys are kept as-is: "key1} {key2}", { 'key1': 'value' } --> "key1} {key2}".</para>
+        /// <para>See <see cref="LogEvent.MessageTemplate"/> for details on <paramref name="template"/> format.</para>
         /// <para>This method never throws exceptions.</para>
         /// </summary>
         /// <param name="template">A message template with zero or more placeholders to substitute.</param>
@@ -33,7 +31,7 @@ namespace Vostok.Logging.Core
             if (properties == null)
                 return template;
 
-            var resultBuilder = StringBuilderCache.Acquire(template.Length * 2);
+            var resultBuilder = StringBuilderCache.Acquire(template.Length*2);
             var tokenBuilderChars = CharArrayCache.Acquire(template.Length);
             var tokenBuilder = new TokenBuilder(tokenBuilderChars);
 

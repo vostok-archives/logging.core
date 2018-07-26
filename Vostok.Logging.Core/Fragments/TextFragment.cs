@@ -11,7 +11,11 @@ namespace Vostok.Logging.Core.Fragments
 
         public void Render(LogEvent @event, TextWriter writer) => writer.Write(text);
 
+        public bool HasValue(LogEvent @event) => !string.IsNullOrEmpty(text);
+
         public override string ToString() => text;
+
+        #region Equality
 
         public override bool Equals(object obj)
         {
@@ -27,5 +31,7 @@ namespace Vostok.Logging.Core.Fragments
         public override int GetHashCode() => text.GetHashCode();
 
         protected bool Equals(TextFragment other) => other != null && text == other.text;
+
+        #endregion
     }
 }

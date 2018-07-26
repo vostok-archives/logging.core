@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
 using Vostok.Logging.Abstractions;
+using Vostok.Logging.Core.Helpers;
 
 namespace Vostok.Logging.Core.Fragments
 {
@@ -31,8 +32,12 @@ namespace Vostok.Logging.Core.Fragments
         public void Render(LogEvent @event, TextWriter writer) =>
             FragmentHelpers.TryWriteProperty(FragmentHelpers.GetPropertyOrNull(@event, property), format, writer);
 
+        public bool HasValue(LogEvent @event) => FragmentHelpers.GetPropertyOrNull(@event, property) != null;
+
         public override string ToString() =>
             format == null ? $"%p({property})" : $"%p({property}:{format})";
+
+        #region Equality
 
         public override bool Equals(object obj)
         {
@@ -48,5 +53,7 @@ namespace Vostok.Logging.Core.Fragments
         public override int GetHashCode() => (format?.GetHashCode() ?? 0) * 397 ^ property.GetHashCode();
 
         protected bool Equals(PropertyFragment other) => other != null && format == other.format && property == other.property;
+
+        #endregion
     }
 }

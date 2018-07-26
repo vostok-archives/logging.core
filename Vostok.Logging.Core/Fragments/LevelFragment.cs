@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Vostok.Logging.Abstractions;
+using Vostok.Logging.Core.Helpers;
 
 namespace Vostok.Logging.Core.Fragments
 {
@@ -11,7 +12,9 @@ namespace Vostok.Logging.Core.Fragments
             FragmentHelpers.TryParse<LevelFragment>(Text, value, ref offset);
 
         public void Render(LogEvent @event, TextWriter writer) =>
-            writer.Write(@event.Level);
+            writer.Write(LogLevelFormatter.Format(@event.Level));
+
+        public bool HasValue(LogEvent @event) => true;
 
         public override string ToString() => Text;
     }

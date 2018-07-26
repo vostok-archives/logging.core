@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Vostok.Logging.Abstractions;
+using Vostok.Logging.Core.Helpers;
 
 namespace Vostok.Logging.Core.Fragments
 {
@@ -11,7 +12,9 @@ namespace Vostok.Logging.Core.Fragments
             FragmentHelpers.TryParse<MessageFragment>(Text, value, ref offset);
 
         public void Render(LogEvent @event, TextWriter writer) =>
-            writer.Write(LogMessageFormatter.FormatMessage(@event.MessageTemplate, @event.Properties)); // TODO(krait): format message to writer?
+            writer.Write(LogMessageFormatter.FormatMessage(@event.MessageTemplate, @event.Properties));
+
+        public bool HasValue(LogEvent @event) => !string.IsNullOrEmpty(@event.MessageTemplate);
 
         public override string ToString() => Text;
     }

@@ -77,7 +77,7 @@ namespace Vostok.Logging.Core.Tests
             var format = $"%p({prop})";
             var pattern = ConversionPatternParser.Parse(format);
 
-            pattern.Should().Be(ConversionPattern.Create().AddProperty(prop).Build()); // TODO(krait): with format
+            pattern.Should().Be(ConversionPattern.Create().AddProperty(prop).Build());
         }
 
         [Test]
@@ -89,7 +89,6 @@ namespace Vostok.Logging.Core.Tests
             pattern.Should().Be(ConversionPattern.Create().AddText(format).Build());
         }
 
-        // TODO(krait): test ToString() separately
         [Test]
         public void Should_parse_multiple_values_pattern()
         {

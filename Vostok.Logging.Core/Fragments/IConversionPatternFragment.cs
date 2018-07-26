@@ -6,5 +6,7 @@ namespace Vostok.Logging.Core.Fragments
     internal interface IConversionPatternFragment
     {
         void Render(LogEvent @event, TextWriter writer);
+
+        bool HasValue(LogEvent @event);
     }
 }   
