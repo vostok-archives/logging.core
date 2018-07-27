@@ -40,12 +40,11 @@ namespace Vostok.Logging.Core.Tests
         {
             var c1 = new TestClass();
 
-            c1.GetHashCode().Should().Be(0);
+            c1.GetHashCode().Should().Be(new TestClass().GetHashCode());
         }
 
         private class TestClass : CompareByType<TestClass>
         {
-
         }
     }
 }

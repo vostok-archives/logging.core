@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace Vostok.Logging.Core.Helpers
 {
-    // TODO(krait): Tests.
     internal static class ComparisonHelpers
     {
         public static int ElementwiseHash<T>(this ICollection<T> collection)

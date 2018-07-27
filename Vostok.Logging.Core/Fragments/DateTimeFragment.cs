@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
 using Vostok.Logging.Abstractions;
+using Vostok.Logging.Core.Helpers;
 
 namespace Vostok.Logging.Core.Fragments
 {

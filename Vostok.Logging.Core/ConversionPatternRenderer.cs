@@ -5,7 +5,6 @@ using Vostok.Logging.Core.Fragments;
 
 namespace Vostok.Logging.Core
 {
-    // TODO(krait): Tests.
     internal static class ConversionPatternRenderer
     {
         public static void Render(LogEvent @event, TextWriter writer, IList<IConversionPatternFragment> fragments)

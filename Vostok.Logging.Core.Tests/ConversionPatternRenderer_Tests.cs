@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using FluentAssertions;
 using NUnit.Framework;
 using Vostok.Logging.Abstractions;
+using Vostok.Logging.Core.Fragments;
 
 namespace Vostok.Logging.Core.Tests
 {
@@ -18,12 +21,15 @@ namespace Vostok.Logging.Core.Tests
 
             var dt = DateTime.Now;
             var logEvent = new LogEvent(LogLevel.Info, dt, "some message");
-            var pattern = new ConversionPatternBuilder()
-                .AddDateTime().Build();
-            pattern.Render(logEvent, writer);
+            
+            var fragments = new List<IConversionPatternFragment>
+            {
+                new DateTimeFragment(null),
+            };
+            ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
-            writer.ToString().Should().Be(dt.ToString("HH:mm:ss zzz"));
+            writer.ToString().Should().Be(dt.ToString("yyyy-MM-dd HH:mm:ss,fff"));
         }
 
         [Test]
@@ -33,9 +39,11 @@ namespace Vostok.Logging.Core.Tests
 
             var dt = DateTime.Now;
             var logEvent = new LogEvent(LogLevel.Info, dt, "some message");
-            var pattern = new ConversionPatternBuilder()
-                .AddDateTime("yyyy-MM-dd").Build();
-            pattern.Render(logEvent, writer);
+            var fragments = new List<IConversionPatternFragment>
+            {
+                new DateTimeFragment("yyyy-MM-dd"),
+            };
+            ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
             writer.ToString().Should().Be(dt.ToString("yyyy-MM-dd"));
@@ -48,12 +56,15 @@ namespace Vostok.Logging.Core.Tests
 
             const string suffix = "suffix";
             var logEvent = DefaultEvent();
-            var pattern = new ConversionPatternBuilder()
-                .AddLevel().AddText(suffix).Build();
-            pattern.Render(logEvent, writer);
+            var fragments = new List<IConversionPatternFragment>
+            {
+                new LevelFragment(),
+                new TextFragment(suffix),
+            };
+            ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
-            writer.ToString().Should().Be(LogLevel.Info+suffix);
+            writer.ToString().Should().Be(LogLevel.Info.ToString().ToUpper()+" "+suffix);
         }
 
         [Test]
@@ -63,9 +74,11 @@ namespace Vostok.Logging.Core.Tests
 
             const string message = "some message";
             var logEvent = new LogEvent(LogLevel.Info, DateTime.Now, message);
-            var pattern = new ConversionPatternBuilder()
-                .AddMessage().Build();
-            pattern.Render(logEvent, writer);
+            var fragments = new List<IConversionPatternFragment>
+            {
+                new MessageFragment(),
+            };
+            ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
             writer.ToString().Should().Be(message);
@@ -78,9 +91,11 @@ namespace Vostok.Logging.Core.Tests
 
             var exception = new Exception("test");
             var logEvent = new LogEvent(LogLevel.Info, DateTime.Now, "some message", exception);
-            var pattern = new ConversionPatternBuilder()
-                .AddException().Build();
-            pattern.Render(logEvent, writer);
+            var fragments = new List<IConversionPatternFragment>
+            {
+                new  ExceptionFragment(),
+            };
+            ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
             writer.ToString().Should().Be(exception.ToString());
@@ -92,9 +107,11 @@ namespace Vostok.Logging.Core.Tests
             var writer = new StringWriter();
 
             var logEvent = DefaultEvent();
-            var pattern = new ConversionPatternBuilder()
-                .AddNewLine().Build();
-            pattern.Render(logEvent, writer);
+            var fragments = new List<IConversionPatternFragment>
+            {
+                new NewLineFragment(),
+            };
+            ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
             writer.ToString().Should().Be(Environment.NewLine);
@@ -110,9 +127,11 @@ namespace Vostok.Logging.Core.Tests
             var logEvent = DefaultEvent()
                 .WithProperty(first, "value 1")
                 .WithProperty(second, "value 2");
-            var pattern = new ConversionPatternBuilder()
-                .AddProperties().Build();
-            pattern.Render(logEvent, writer);
+            var fragments = new List<IConversionPatternFragment>
+            {
+                new PropertiesFragment(),
+            };
+            ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
             writer.ToString().Should().Be($"[properties: {first} = value 1, {second} = value 2]");
@@ -127,9 +146,11 @@ namespace Vostok.Logging.Core.Tests
             const string value = "value";
             var logEvent = DefaultEvent()
                 .WithProperty(prop, value);
-            var pattern = new ConversionPatternBuilder()
-                .AddProperty(prop).Build();
-            pattern.Render(logEvent, writer);
+            var fragments = new List<IConversionPatternFragment>
+            {
+                new PropertyFragment(prop, null),
+            };
+            ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
             writer.ToString().Should().Be($"{value}");
@@ -141,16 +162,18 @@ namespace Vostok.Logging.Core.Tests
             var writer = new StringWriter();
 
             const string prop = "prop";
-            const string value = "value";
-            const string suffix = "SUFFIX";
+            const double value = 1.23456;
+            const string format = "0.00";
             var logEvent = DefaultEvent()
                 .WithProperty(prop, value);
-            var pattern = new ConversionPatternBuilder()
-                .AddProperty(prop).AddText(suffix).Build();
-            pattern.Render(logEvent, writer);
+            var fragments = new List<IConversionPatternFragment>
+            {
+                new PropertyFragment(prop, format),
+            };
+            ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
-            writer.ToString().Should().Be($"{value}{suffix}");
+            writer.ToString().Should().Be($"{value.ToString(format, CultureInfo.InvariantCulture)}");
         }
 
         [Test]
@@ -158,14 +181,16 @@ namespace Vostok.Logging.Core.Tests
         {
             var writer = new StringWriter();
 
-            const string suffix = "string start";
+            const string text = "string start";
             var logEvent = DefaultEvent();
-            var pattern = new ConversionPatternBuilder()
-                .AddText(suffix).Build();
-            pattern.Render(logEvent, writer);
+            var fragments = new List<IConversionPatternFragment>
+            {
+                new TextFragment(text),
+            };
+            ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
-            writer.ToString().Should().Be(suffix);
+            writer.ToString().Should().Be(text);
         }
 
         [Test]
@@ -182,21 +207,21 @@ namespace Vostok.Logging.Core.Tests
 
             var logEvent = new LogEvent(LogLevel.Info, dt, message)
                 .WithProperty(prop, propValue);
-            var pattern = new ConversionPatternBuilder()
-                .AddText(start)
-                .AddDateTime(dtFormat)
-                .AddText(" ")
-                .AddLevel()
-                .AddText(" ")
-                .AddProperty(prop)
-                .AddText(" message: ")
-                .AddMessage()
-                .AddNewLine()
-                .Build();
-            pattern.Render(logEvent, writer);
+            var fragments = new List<IConversionPatternFragment>
+            {
+                new TextFragment(start),
+                new DateTimeFragment(dtFormat),
+                new TextFragment(" "),
+                new LevelFragment(),
+                new PropertyFragment(prop, null),
+                new TextFragment(" message: "),
+                new MessageFragment(),
+                new NewLineFragment(),
+            };
+            ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
-            writer.ToString().Should().Be($"{start}{dt.ToString(dtFormat)} {LogLevel.Info} {propValue} message: {message}{Environment.NewLine}");
+            writer.ToString().Should().Be($"{start}{dt.ToString(dtFormat)} {LogLevel.Info.ToString().ToUpper()} {propValue} message: {message}{Environment.NewLine}");
         }
 
         [Test]
@@ -208,9 +233,26 @@ namespace Vostok.Logging.Core.Tests
             const LogLevel level = LogLevel.Info;
             var logEvent = new LogEvent(LogLevel.Info, dt, null);
 
-            var pattern = ConversionPatternParser.Parse("a%da%laa%ma%ea%pa%p(prop)a%n");
-            var template = string.Format("a{0:HH:mm:ss zzz}a{1}a\r\n", dt, level);
-            pattern.Render(logEvent, writer);
+            var fragments = new List<IConversionPatternFragment>
+            {
+                new TextFragment("a"),
+                new DateTimeFragment(null),
+                new TextFragment("a"),
+                new LevelFragment(),
+                new TextFragment("a"),
+                new TextFragment("a"),
+                new MessageFragment(),
+                new TextFragment("a1"),
+                new ExceptionFragment(),
+                new TextFragment("a2"),
+                new PropertiesFragment(),
+                new TextFragment("a3"),
+                new PropertyFragment("prop", null),
+                new TextFragment("a4"),
+                new NewLineFragment(),
+            };
+            var template = string.Format("a{0:yyyy-MM-dd HH:mm:ss,fff}a{1} aa\r\n", dt, level.ToString().ToUpper());
+            ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
             writer.ToString().Should().Be(template);

@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Vostok.Logging.Core
+namespace Vostok.Logging.Core.Helpers
 {
     internal static class RegexExtensions
     {

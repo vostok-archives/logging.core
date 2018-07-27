@@ -28,7 +28,7 @@ namespace Vostok.Logging.Core.Fragments
             return false;
         }
 
-        public override int GetHashCode() => text.GetHashCode();
+        public override int GetHashCode() => text?.GetHashCode() ?? 0;
 
         protected bool Equals(TextFragment other) => other != null && text == other.text;
 

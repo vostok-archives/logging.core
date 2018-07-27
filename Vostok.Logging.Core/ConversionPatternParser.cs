@@ -5,7 +5,6 @@ using Vostok.Logging.Core.Fragments;
 
 namespace Vostok.Logging.Core
 {
-    // TODO(krait): Tests.
     internal static class ConversionPatternParser
     {
         private delegate IConversionPatternFragment FragmentParser(string value, ref int offset);

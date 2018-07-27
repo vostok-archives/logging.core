@@ -7,7 +7,6 @@ using Vostok.Logging.Core.Helpers;
 
 namespace Vostok.Logging.Core
 {
-    // TODO(krait): Tests: equality, ToString()
     /// <summary>
     /// A pattern of one log line.
     /// </summary>

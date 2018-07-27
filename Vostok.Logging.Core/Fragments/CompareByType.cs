@@ -4,6 +4,6 @@
     {
         public override bool Equals(object obj) => obj is T;
 
-        public override int GetHashCode() => 0;
+        public override int GetHashCode() => typeof(T).GetHashCode();
     }
 }

@@ -6,7 +6,7 @@ namespace Vostok.Logging.Core.Fragments
 {
     internal class ExceptionFragment : CompareByType<ExceptionFragment>, IConversionPatternFragment
     {
-        protected const string Text = "%e";
+        private const string Text = "%e";
 
         public static ExceptionFragment TryParse(string value, ref int offset) =>
             FragmentHelpers.TryParse<ExceptionFragment>(Text, value, ref offset);

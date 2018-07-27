@@ -2,10 +2,10 @@
 using System.Globalization;
 using System.IO;
 using Vostok.Logging.Abstractions;
+using Vostok.Logging.Core.Fragments;
 
 namespace Vostok.Logging.Core.Helpers
 {
-    // TODO(krait): Tests.
     internal static class FragmentHelpers
     {
         public static object GetPropertyOrNull(LogEvent @event, string propertyName) =>
@@ -24,7 +24,7 @@ namespace Vostok.Logging.Core.Helpers
         }
 
         public static T TryParse<T>(string fragmentText, string input, ref int offset)
-            where T : new()
+            where T : IConversionPatternFragment, new()
         {
             if (string.Compare(input, offset, fragmentText, 0, fragmentText.Length, StringComparison.InvariantCultureIgnoreCase) != 0)
                 return default;
