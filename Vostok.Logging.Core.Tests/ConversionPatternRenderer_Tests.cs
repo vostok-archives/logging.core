@@ -251,7 +251,7 @@ namespace Vostok.Logging.Core.Tests
                 new TextFragment("a4"),
                 new NewLineFragment(),
             };
-            var template = string.Format("a{0:yyyy-MM-dd HH:mm:ss,fff}a{1} aa\r\n", dt, level.ToString().ToUpper());
+            var template = string.Format("a{0:yyyy-MM-dd HH:mm:ss,fff}a{1} aa" + Environment.NewLine, dt, level.ToString().ToUpper());
             ConversionPatternRenderer.Render(logEvent, writer, fragments);
             writer.Flush();
 
