@@ -10,7 +10,6 @@ notests *default:
 
   deps:
     - vostok.logging.abstractions@dev
-    - vostok.commons@dev
     - vostok.devtools
 
 full-build > notests:
