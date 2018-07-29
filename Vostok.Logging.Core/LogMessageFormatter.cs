@@ -6,6 +6,7 @@ using System.Text;
 using JetBrains.Annotations;
 using Vostok.Logging.Abstractions;
 using Vostok.Logging.Abstractions.Helpers;
+using Vostok.Logging.Core.Helpers;
 
 namespace Vostok.Logging.Core
 {
