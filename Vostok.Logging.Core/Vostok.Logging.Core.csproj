@@ -34,11 +34,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageProjectUrl>https://github.com/vostok/logging</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/vostok/logging/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/vostok/logging.core</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/vostok/logging.core/blob/master/LICENSE</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>vostok vostok.logging</PackageTags>
-    <RepositoryUrl>https://github.com/vostok/logging</RepositoryUrl>
+    <RepositoryUrl>https://github.com/vostok/logging.core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
