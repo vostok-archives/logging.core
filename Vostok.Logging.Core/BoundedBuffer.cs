@@ -31,12 +31,11 @@ namespace Vostok.Logging.Core
                     return false;
 
                 if (Interlocked.CompareExchange(ref itemsCount, currentCount + 1, currentCount) == currentCount)
-                {
                     while (true)
                     {
                         var currentFrontPtr = frontPtr;
 
-                        if (Interlocked.CompareExchange(ref frontPtr, (currentFrontPtr + 1) % items.Length, currentFrontPtr) == currentFrontPtr)
+                        if (Interlocked.CompareExchange(ref frontPtr, (currentFrontPtr + 1)%items.Length, currentFrontPtr) == currentFrontPtr)
                         {
                             items[currentFrontPtr] = item;
 
@@ -45,7 +44,6 @@ namespace Vostok.Logging.Core
                             return true;
                         }
                     }
-                }
             }
         }
 
@@ -76,9 +74,6 @@ namespace Vostok.Logging.Core
             return resultCount;
         }
 
-        public Task WaitForNewItemsAsync()
-        {
-            return canDrainAsync.Task;
-        }
+        public Task WaitForNewItemsAsync() => canDrainAsync.Task;
     }
 }
